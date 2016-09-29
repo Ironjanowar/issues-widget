@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1"
+        vendor="CoNWeT" name="Visualizer Widget" version="1.0.1">
+  <details>
+    <title>Issues</title>
+    <authors>Cesar Guzman &lt;c.galpizar@alumnos.fi.upm.es&gt;</authors>
+    <email>wirecloud@conwet.com</email>
+    <description>Chart that shows the issues of users</description>
+    <license>Apache License 2.0</license>
+    <licenseurl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseurl>
+  </details>
+
+  <contents src="index.html" useplatformstyle="true"/>
+
+  <rendering width="15" height="40"/>
+
+  <preferences>
+    <preference name="View" type="list" label="Select View" default="web">
+      <option label="Web View" value="web" />
+      <option label="Tree View" value="tree" />
+    </preference>
+  </preferences>
+
+  <wiring>
+    <inputendpoint name="inputJSON" type="text" label="inputJSON" description="Receives the JSON to show in the chart" />
+  </wiring>
+</widget>
