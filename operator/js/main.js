@@ -25,12 +25,22 @@
             // Makes every name unique
             var userNamesUnique = userNames.filter(function(elem, index, self) {
                 return index == self.indexOf(elem);
-            })
+            });
+
+	    // Produces a random color
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF';
+                var color = '';
+                for (var i = 0; i < 6; i++ ) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            };
 
             // Creates the users array
             // Structure: [{ name: "name1" }, { name: "name2" }, ... ]
             for (let i in userNamesUnique) {
-                users[i] = {};
+		users[i] = {};
                 users[i].name = userNamesUnique[i];
                 users[i].children = [];
             }
@@ -53,11 +63,15 @@
 
             // Returns a filtered object
             function getChild(full) {
+		var colour = getRandomColor();
+                var image = "https://dummyimage.com/300x200/" + getRandomColor() + "250/" + colour + "/" + colour + ".jpg&text=%23" + full.key.substring(1);
+		
                 var filtered = {
                     key: full.key,
                     title: full.title,
                     labels: full.labels,
                     link: full.link,
+		    img: image,
                     radio: -1
                 };
 
