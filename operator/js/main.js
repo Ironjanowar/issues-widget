@@ -27,7 +27,7 @@
                 return index == self.indexOf(elem);
             });
 
-	    // Produces a random color
+            // Produces a random color
             function getRandomColor() {
                 var letters = '0123456789ABCDEF';
                 var color = '';
@@ -40,7 +40,7 @@
             // Creates the users array
             // Structure: [{ name: "name1" }, { name: "name2" }, ... ]
             for (let i in userNamesUnique) {
-		users[i] = {};
+                users[i] = {};
                 users[i].name = userNamesUnique[i];
                 users[i].children = [];
             }
@@ -63,16 +63,17 @@
 
             // Returns a filtered object
             function getChild(full) {
-		var colour = getRandomColor();
+                var colour = getRandomColor();
                 var image = "https://dummyimage.com/300x200/" + getRandomColor() + "250/" + colour + "/" + colour + ".jpg&text=%23" + full.key.substring(1);
-		
+
                 var filtered = {
                     key: full.key,
                     title: full.title,
                     labels: full.labels,
                     link: full.link,
-		    img: image,
-                    radio: -1
+                    img: image,
+		    // By the moment we take the key as an id too
+                    id: full.key
                 };
 
                 return filtered;
