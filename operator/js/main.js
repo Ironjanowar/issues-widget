@@ -41,7 +41,9 @@
             // Structure: [{ name: "name1" }, { name: "name2" }, ... ]
             for (let i in userNamesUnique) {
                 users[i] = {};
-                users[i].name = userNamesUnique[i];
+                users[i].label_name = userNamesUnique[i];
+                users[i].image = "http://github.com/" + userNamesUnique[i] + ".png?size=100"
+                users[i].id = userNamesUnique[i];
                 users[i].children = [];
             }
 
@@ -49,7 +51,7 @@
 
             // List to object
             for (let user of users) {
-                finalUsers[user.name] = user;
+                finalUsers[user.label_name] = user;
             }
 
             // Creates the final Structure
@@ -59,7 +61,14 @@
                 }
             }
 
-            return finalUsers;
+            var arrayOfFinalUsers = [];
+
+            // Creates an array with the final users
+            for (let user_name of Object.keys(finalUsers)) {
+                arrayOfFinalUsers.push(finalUsers[user_name]);
+            }
+
+            return arrayOfFinalUsers;
 
             // Returns a filtered object
             function getChild(full) {
@@ -67,12 +76,12 @@
                 var image = "https://dummyimage.com/300x200/" + getRandomColor() + "250/" + colour + "/" + colour + ".jpg&text=%23" + full.key.substring(1);
 
                 var filtered = {
-		    label_name: full.key,
+                    label_name: full.key,
                     title: full.title,
                     labels: full.labels,
                     link: full.link,
                     image: image,
-		    // By the moment we take the key as an id too
+                    // By the moment we take the key as an id too
                     id: full.key
                 };
 

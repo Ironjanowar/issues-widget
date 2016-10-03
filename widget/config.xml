@@ -15,10 +15,7 @@
   <rendering width="15" height="40"/>
 
   <preferences>
-    <preference name="View" type="list" label="Select View" default="web">
-      <option label="Web View" value="web" />
-      <option label="Tree View" value="tree" />
-    </preference>
+    <preference name="User" type="list" label="Select User" default="-" />
   </preferences>
 
   <wiring>
