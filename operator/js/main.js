@@ -67,11 +67,11 @@
                 var image = "https://dummyimage.com/300x200/" + getRandomColor() + "250/" + colour + "/" + colour + ".jpg&text=%23" + full.key.substring(1);
 
                 var filtered = {
-                    key: full.key,
+		    label_name: full.key,
                     title: full.title,
                     labels: full.labels,
                     link: full.link,
-                    img: image,
+                    image: image,
 		    // By the moment we take the key as an id too
                     id: full.key
                 };
