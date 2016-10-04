@@ -15,7 +15,10 @@
   <rendering width="15" height="40"/>
 
   <preferences>
-    <preference name="User" type="list" label="Select User" default="-" />
+    <preference name="View" type="list" label="Select View" default="graph">
+      <option label="Graph View" value="graph" />
+      <option label="Tree View" value="tree" />
+    </preference>
   </preferences>
 
   <wiring>

@@ -15,6 +15,9 @@ function config() {
     // When a JSON is received paint it
     MashupPlatform.wiring.registerCallback('inputJSON', repaint);
 
+    // When any preferences change repaint
+    MashupPlatform.prefs.registerCallback(repaint.bind(dataSet));
+
     // Paint the dataSet
     paint_graph(defaultSet);
 };
@@ -24,7 +27,15 @@ function paint(inputJSON) {
     console.log("Painting...");
     normalizeDataSet(inputJSON);
 
-    paint_graph(dataSet);
+    var view = MashupPlatform.prefs.get('View');
+
+    if (view == "graph") {
+        paint_graph(dataSet);
+    } else {
+        paint_tree(dataSet);
+    }
+
+
 };
 
 // Parses the input information to JSON format
@@ -72,10 +83,10 @@ function repaint(inputJSON) {
     paint(inputJSON);
 }
 
-// Paints the web view with the json information
+// Paints the graph view
 function paint_graph(node_array) {
     if (node_array == null || node_array[0] == null) { return; }
-    
+
     // some colour variables
     var tcBlack = "#130C0E";
 
@@ -112,7 +123,7 @@ function paint_graph(node_array) {
     };
 
     var svg = document.getElementById("mySvg");
-    
+
     // By the moment we take always the first root_node
     root = node_array[0];
     root.fixed = true;
@@ -261,8 +272,8 @@ function paint_graph(node_array) {
         //    d._children = null;
         //}
 
-	MashupPlatform.wiring.pushEvent("outputNodeData", d);
-	
+        MashupPlatform.wiring.pushEvent("outputNodeData", d);
+
         //update();
     }
 
@@ -294,7 +305,7 @@ function paint_graph(node_array) {
             toUpdate = true;
         }
 
-        if ('widthInPixels' in new_values && Math.abs(h - new_values.widthInPixels) > 10) {
+        if ('widthInPixels' in new_values && Math.abs(w - new_values.widthInPixels) > 10) {
             w = MashupPlatform.widget.context.get('widthInPixels');
             svg.setAttribute("width", w);
             toUpdate = true;
@@ -310,93 +321,23 @@ function paint_graph(node_array) {
     MashupPlatform.widget.context.registerCallback(handleResize);
 };
 
-// Paints the tree view with the json information
-// TODO
-function paint_tree() {
-    var margin = {top: 40, right: 120, bottom: 20, left: 120},
-        width = 960 - margin.right - margin.left,
-        height = 500 - margin.top - margin.bottom;
+// Paints the tree view
+function paint_tree(node_array) {
+    if (node_array == null || node_array[0] == null) { return; }
 
-    var i = 0,
-        duration = 700;
+    var margin = {top: 20, right: 120, bottom: 20, left: 120};
+    var width, height;
 
-    var tree = d3.layout.tree()
-        .size([height, width]);
 
-    var diagonal = d3.svg.diagonal()
-        .projection(function(d) { return [d.x, d.y]; });
-
-    var svg = d3.select("body").append("svg")
-        .attr("width", width + margin.right + margin.left)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    root = dataSet;
-
-    update(root);
-
-    function update(source) {
-
-        // Compute the new tree layout.
-        var nodes = tree.nodes(root).reverse(),
-            links = tree.links(nodes);
-
-        // Normalize for fixed-depth.
-        nodes.forEach(function(d) { d.y = d.depth * 100; });
-
-        // Declare the nodes…
-        var node = svg.selectAll("g.node")
-            .data(nodes, function(d) { return d.id || (d.id = ++i); });
-
-        // Enter the nodes.
-        var nodeEnter = node.enter().append("g")
-            .attr("class", "node")
-            .attr("transform", function(d) {
-                return "translate(" + d.x + "," + d.y + ")"; });
-
-        nodeEnter.append("circle")
-            .attr("class", (d) => {
-                return d.image ? "image" : "invisible" })
-            .attr("r", 10)
-            .style("fill", "#fff");
-
-        nodeEnter.append("svg:image")
-            .attr("xlink:href", (d) => { return d.image })
-            .attr("x", -25)
-            .attr("y", -25)
-            .attr("height", (d) => { return d.img_h || 50 })
-            .attr("width", (d) => { return d.img_w || 50 })
-
-        nodeEnter.append("text")
-            .attr("x", (d) => {
-                return d.children || d._children ? 40 : 0; })
-            .attr("y", (d) => {
-                return d.children || d._children ? 0 : 28; })
-            .attr("dy", ".35em")
-            .attr("text-anchor", (d) => {
-                return d.children || d._children ? "start" : "middle"})
-            .text(function(d) { return d.label_name; })
-            .style("fill-opacity", 1);
-
-        // Declare the links…
-        var link = svg.selectAll("path.link")
-            .data(links, function(d) { return d.target.id; });
-
-        // Enter the links.
-        link.enter().insert("path", "g")
-            .attr("class", "link")
-            .attr("d", diagonal);
+    if (MashupPlatform.widget.context.get('widthInPixels') !== 0 &&
+        MashupPlatform.widget.context.get('heightInPixels') !== 0) {
+        width = MashupPlatform.widget.context.get('widthInPixels');
+        height = MashupPlatform.widget.context.get('heightInPixels');
+    } else {
+        width = 999;
+        height = 433;
     }
-};
 
-// Paints the tree view with the json information
-// TODO: Fix display
-function old_tree_view() {
-    // ************** Generate the tree diagram      *****************
-    var margin = {top: 20, right: 120, bottom: 20, left: 120},
-        width = 960 - margin.right - margin.left,
-        height = 500 - margin.top - margin.bottom;
 
     var i = 0,
         duration = 750,
@@ -414,13 +355,24 @@ function old_tree_view() {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    root = dataSet;
+    // By the moment we take always the first root_node
+    root = node_array[0];
     root.x0 = height / 2;
     root.y0 = 0;
 
+    function collapse(d) {
+        if (d.children) {
+            d._children = d.children;
+            d._children.forEach(collapse);
+            d.children = null;
+        }
+    }
+
+    root.children.forEach(collapse);
     update(root);
 
-    d3.select(self.frameElement).style("height", "500px");
+
+    d3.select(self.frameElement).style("height", "800px");
 
     function update(source) {
 
@@ -446,7 +398,7 @@ function old_tree_view() {
             .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
         nodeEnter.append("text")
-            .attr("x", function(d) { return d.children || d._children ? -13 : 13; })
+            .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
             .attr("dy", ".35em")
             .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
             .text(function(d) { return d.label_name; })
@@ -458,7 +410,7 @@ function old_tree_view() {
             .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
         nodeUpdate.select("circle")
-            .attr("r", 10)
+            .attr("r", 4.5)
             .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
         nodeUpdate.select("text")
@@ -518,9 +470,36 @@ function old_tree_view() {
             d.children = d._children;
             d._children = null;
         }
+
+	MashupPlatform.wiring.pushEvent("outputNodeData", d);
+	
         update(d);
     }
-};
+
+    function handleResize(new_values) {
+        var toUpdate = false;
+
+        if ('heightInPixels' in new_values && Math.abs(height - new_values.heightInPixels) > 10) {
+            height = MashupPlatform.widget.context.get('heightInPixels');
+            svg.setAttribute("height", height);
+            toUpdate = true;
+        }
+
+        if ('widthInPixels' in new_values && Math.abs(width - new_values.widthInPixels) > 10) {
+            w = MashupPlatform.widget.context.get('widthInPixels');
+            svg.setAttribute("width", width);
+            toUpdate = true;
+        }
+
+        if (toUpdate) {
+            update(root);
+            toUpdate = false;
+        }
+    }
+
+    // Calls update to repaint the svg
+    MashupPlatform.widget.context.registerCallback(handleResize);
+}
 
 // Define the endpoint and the connection handler
 config();
