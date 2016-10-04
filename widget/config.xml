@@ -20,5 +20,6 @@
 
   <wiring>
     <inputendpoint name="inputJSON" type="text" label="inputJSON" description="Receives the JSON to show in the chart" />
+    <outputendpoint name="outputNodeData" type="text" label="outputData" description="Sends the data of the node that has been clicked" />
   </wiring>
 </widget>

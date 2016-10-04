@@ -14,7 +14,7 @@ var dataSet = defaultSet;
 function config() {
     // When a JSON is received paint it
     MashupPlatform.wiring.registerCallback('inputJSON', repaint);
-        
+
     // Paint the dataSet
     paint_graph(defaultSet);
 };
@@ -23,7 +23,7 @@ function config() {
 function paint(inputJSON) {
     console.log("Painting...");
     normalizeDataSet(inputJSON);
-    
+
     paint_graph(dataSet);
 };
 
@@ -74,6 +74,8 @@ function repaint(inputJSON) {
 
 // Paints the web view with the json information
 function paint_graph(node_array) {
+    if (node_array == null || node_array[0] == null) { return; }
+    
     // some colour variables
     var tcBlack = "#130C0E";
 
@@ -102,18 +104,24 @@ function paint_graph(node_array) {
         .attr("height", h)
         .attr("id", "mySvg");
 
-    var svg = document.getElementById("mySvg");
+    // Moves a svg element to the front
+    d3.selection.prototype.moveToFront = function() {
+        return this.each(function(){
+            this.parentNode.appendChild(this);
+        });
+    };
 
+    var svg = document.getElementById("mySvg");
+    
     // By the moment we take always the first root_node
     root = node_array[0];
     root.fixed = true;
     root.x = w / 2;
-    root.y = h / 4;
+    root.y = h / 2;
 
     // Build the path
     var defs = vis.insert("svg:defs")
         .data(["end"]);
-
 
     defs.enter().append("svg:path")
         .attr("d", "M0,-5L10,0L0,5");
@@ -145,19 +153,17 @@ function paint_graph(node_array) {
 
         path.enter().insert("svg:path")
             .attr("class", "link")
-        // .attr("marker-end", "url(#end)")
-            .style("stroke", "#eee");
-
+            .style("stroke", "#a9a9a9");
 
         // Exit any old paths.
         path.exit().remove();
-
-
 
         // Update the nodes…
         var node = vis.selectAll("g.node")
             .data(nodes, function(d) { return d.id; });
 
+        // Move images to the front
+        node.moveToFront();
 
         // Enter any new nodes.
         var nodeEnter = node.enter().append("svg:g")
@@ -171,7 +177,6 @@ function paint_graph(node_array) {
             .attr("r", function(d) { return Math.sqrt(d.size) / 10 || 4.5; })
             .style("fill", "#eee");
 
-
         // Append images
         var images = nodeEnter.append("svg:image")
             .attr("xlink:href",  function(d) { return d.image;})
@@ -182,15 +187,6 @@ function paint_graph(node_array) {
 
         // make the image grow a little on mouse over and add the text details on click
         var setEvents = images
-        // Append hero text
-
-        // Not used heather
-        //            .on( 'click', function (d) {
-        //                d3.select("h1").html(d.last_name);
-        //                d3.select("h2").html(d.name);
-        //                d3.select("h3").html ("Take me to " + "<a href='" + d.link + "' >"  + d.last_name + " web page ⇢"+ "</a>" );
-        //            })
-
             .on( 'mouseenter', function() {
                 // select element in current context
                 d3.select( this )
@@ -210,7 +206,6 @@ function paint_graph(node_array) {
                     .attr("width", 50);
             });
 
-
         // Append hero name on roll over next to the node as well
         nodeEnter.append("text")
             .attr("class", "nodetext")
@@ -219,10 +214,8 @@ function paint_graph(node_array) {
             .attr("fill", tcBlack)
             .text(function(d) { return d.last_name; });
 
-
         // Exit any old nodes.
         node.exit().remove();
-
 
         // Re-select for update.
         path = vis.selectAll("path.link");
@@ -260,17 +253,18 @@ function paint_graph(node_array) {
      * Toggle children on click.
      */
     function click(d) {
-        if (d.children) {
-            d._children = d.children;
-            d.children = null;
-        } else {
-            d.children = d._children;
-            d._children = null;
-        }
+        //if (d.children) {
+        //    d._children = d.children;
+        //    d.children = null;
+        //} else {
+        //    d.children = d._children;
+        //    d._children = null;
+        //}
 
-        update();
+	MashupPlatform.wiring.pushEvent("outputNodeData", d);
+	
+        //update();
     }
-
 
     /**
      * Returns a list of all nodes under the root.
@@ -312,6 +306,7 @@ function paint_graph(node_array) {
         }
     }
 
+    // Calls update to repaint the svg
     MashupPlatform.widget.context.registerCallback(handleResize);
 };
 

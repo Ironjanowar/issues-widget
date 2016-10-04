@@ -72,9 +72,13 @@
 
             // Returns a filtered object
             function getChild(full) {
-                var colour = getRandomColor();
-                var image = "https://dummyimage.com/300x200/" + getRandomColor() + "250/" + colour + "/" + colour + ".jpg&text=%23" + full.key.substring(1);
-
+		var image;
+		if (full.status == "closed") {
+                    image = "https://dummyimage.com/300x200/00cc07250/000000/" + full.key.substring(1) + ".jpg&text=%23" + full.key.substring(1);
+		} else {
+		    image = "https://dummyimage.com/300x200/cc0000/000000/" + full.key.substring(1) + ".jpg&text=%23" + full.key.substring(1);
+		}
+		
                 var filtered = {
                     label_name: full.key,
                     title: full.title,
