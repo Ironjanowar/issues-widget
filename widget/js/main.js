@@ -180,7 +180,8 @@ function paint_graph(node_array) {
         var nodeEnter = node.enter().append("svg:g")
             .attr("class", "node")
             .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-            .on("click", click)
+            .on("click", singleclick)
+	    .on("dblclick", doubleclick)
             .call(force.drag);
 
         // Append a circle
@@ -263,19 +264,21 @@ function paint_graph(node_array) {
     /**
      * Toggle children on click.
      */
-    function click(d) {
-        //if (d.children) {
-        //    d._children = d.children;
-        //    d.children = null;
-        //} else {
-        //    d.children = d._children;
-        //    d._children = null;
-        //}
-
+    function singleclick(d) {
         MashupPlatform.wiring.pushEvent("outputNodeData", d);
+    };
 
-        //update();
-    }
+    function doubleclick(d) {
+        if (d.children) {
+            d._children = d.children;
+            d.children = null;
+        } else {
+            d.children = d._children;
+            d._children = null;
+        }
+
+        update();
+    };
 
     /**
      * Returns a list of all nodes under the root.
@@ -294,7 +297,7 @@ function paint_graph(node_array) {
 
         recurse(root);
         return nodes;
-    }
+    };
 
     function handleResize(new_values) {
         var toUpdate = false;
@@ -325,7 +328,7 @@ function paint_graph(node_array) {
 function paint_tree(node_array) {
     if (node_array == null || node_array[0] == null) { return; }
 
-    var margin = {top: 20, right: 120, bottom: 20, left: 120};
+    var margin = {top: 0, right: 120, bottom: 0, left: 120};
     var width, height;
 
 
@@ -391,7 +394,8 @@ function paint_tree(node_array) {
         var nodeEnter = node.enter().append("g")
             .attr("class", "node")
             .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-            .on("click", click);
+            .on("click", singleclick)
+	    .on("dblclick", doubleclick);
 
         nodeEnter.append("circle")
             .attr("r", 1e-6)
@@ -462,7 +466,14 @@ function paint_tree(node_array) {
     }
 
     // Toggle children on click.
-    function click(d) {
+    function singleclick(d) {
+        var toSend = d;
+        delete toSend.parent;
+
+        MashupPlatform.wiring.pushEvent("outputNodeData", d);
+    };
+
+    function doubleclick(d) {
         if (d.children) {
             d._children = d.children;
             d.children = null;
@@ -471,10 +482,8 @@ function paint_tree(node_array) {
             d._children = null;
         }
 
-	MashupPlatform.wiring.pushEvent("outputNodeData", d);
-	
-        update(d);
-    }
+        update(d);	
+    };
 
     function handleResize(new_values) {
         var toUpdate = false;
