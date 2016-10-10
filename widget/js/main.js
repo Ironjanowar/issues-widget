@@ -34,8 +34,6 @@ function paint(inputJSON) {
     } else {
         paint_tree(dataSet);
     }
-
-
 };
 
 // Parses the input information to JSON format
@@ -179,9 +177,10 @@ function paint_graph(node_array) {
         // Enter any new nodes.
         var nodeEnter = node.enter().append("svg:g")
             .attr("class", "node")
+            .attr("data", function(d) { return d; })
             .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
             .on("click", singleclick)
-	    .on("dblclick", doubleclick)
+            .on("dblclick", doubleclick)
             .call(force.drag);
 
         // Append a circle
@@ -195,7 +194,22 @@ function paint_graph(node_array) {
             .attr("x", function(d) { return -25;})
             .attr("y", function(d) { return -25;})
             .attr("height", 50)
-            .attr("width", 50);
+            .attr("width", 50)
+            .attr("title", function(d) {
+                if (d.labels) {
+                    var labels = ""
+                    for (var label of d.labels) {
+                        labels += "#" + label + "\n";
+                    }
+                }
+		
+                return d.title ? d.title + "\n" + labels : "No title";
+            });
+
+        $(document).ready(function() {
+            $('.node image').tooltipster();
+        });
+
 
         // make the image grow a little on mouse over and add the text details on click
         var setEvents = images
@@ -395,7 +409,7 @@ function paint_tree(node_array) {
             .attr("class", "node")
             .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
             .on("click", singleclick)
-	    .on("dblclick", doubleclick);
+            .on("dblclick", doubleclick);
 
         nodeEnter.append("circle")
             .attr("r", 1e-6)
@@ -482,7 +496,7 @@ function paint_tree(node_array) {
             d._children = null;
         }
 
-        update(d);	
+        update(d);
     };
 
     function handleResize(new_values) {
