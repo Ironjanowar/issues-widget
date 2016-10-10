@@ -241,7 +241,7 @@
 
 .tooltipster-sidetip .tooltipster-box {
 	background: #565656;
-	border: 2px solid black;
+	border: 2px solid #565656;
 	border-radius: 4px;
 }
 
@@ -358,19 +358,19 @@ corresponds to the arrow we want to display */
 }
 
 .tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-border {
-	border-bottom-color: black;
+	border-bottom-color: #565656;
 }
 
 .tooltipster-sidetip.tooltipster-left .tooltipster-arrow-border {
-	border-left-color: black;
+	border-left-color: #565656;
 }
 
 .tooltipster-sidetip.tooltipster-right .tooltipster-arrow-border {
-	border-right-color: black;
+	border-right-color: #565656;
 }
 
 .tooltipster-sidetip.tooltipster-top .tooltipster-arrow-border {
-	border-top-color: black;
+	border-top-color: #565656;
 }
 
 /* tooltipster-arrow-uncropped */

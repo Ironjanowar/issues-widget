@@ -196,18 +196,35 @@ function paint_graph(node_array) {
             .attr("height", 50)
             .attr("width", 50)
             .attr("title", function(d) {
+                // Create the title to be shown
+                var title = "No title";
+                if (d.title) {
+                    title = d.title;
+                }
+
+                // Create the link to be shown
+                var link = "No link";
+                if (d.link) {
+                    link = "<a href=" + d.link + " target=\"_blank\"> Go to link <a/>";
+                }
+
+                // Create the labels to be shown
+                var labels = "No labels";
                 if (d.labels) {
-                    var labels = ""
+                    labels = "";
                     for (var label of d.labels) {
                         labels += "#" + label + "\n";
                     }
                 }
-		
-                return d.title ? d.title + "\n" + labels : "No title";
+
+                return title + "<br />" + link +  "<br />" + labels;
             });
 
         $(document).ready(function() {
-            $('.node image').tooltipster();
+            $('.node image').tooltipster({
+                contentAsHTML: true,
+                interactive: true
+            });
         });
 
 
@@ -409,11 +426,42 @@ function paint_tree(node_array) {
             .attr("class", "node")
             .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
             .on("click", singleclick)
-            .on("dblclick", doubleclick);
+            .on("dblclick", doubleclick.bind(source));
 
         nodeEnter.append("circle")
             .attr("r", 1e-6)
-            .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+            .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
+            .attr("title", function(d) {
+                // Create the title to be shown
+                var title = "No title";
+                if (d.title) {
+                    title = d.title;
+                }
+
+                // Create the link to be shown
+                var link = "No link";
+                if (d.link) {
+                    link = "<a href=" + d.link + " target=\"_blank\"> Go to link <a/>";
+                }
+
+                // Create the labels to be shown
+                var labels = "No labels";
+                if (d.labels) {
+                    labels = "";
+                    for (var label of d.labels) {
+                        labels += "#" + label + "\n";
+                    }
+                }
+
+                return title + "<br />" + link +  "<br />" + labels;
+            });
+
+        $(document).ready(function() {
+            $('.node circle').tooltipster({
+                contentAsHTML: true,
+                interactive: true
+            });
+        });
 
         nodeEnter.append("text")
             .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
@@ -484,18 +532,37 @@ function paint_tree(node_array) {
         var toSend = d;
         delete toSend.parent;
 
-        MashupPlatform.wiring.pushEvent("outputNodeData", d);
+        if (toSend._children) {
+            toSend.children = toSend._children;
+            delete toSend._children;
+        }
+
+        if (toSend.children) {
+            removeParents(toSend.children);
+        }
+
+        MashupPlatform.wiring.pushEvent("outputNodeData", toSend);
+    };
+
+    // Remove parent nodes
+    function removeParents(arrayOfChildren) {
+        for (let child of arrayOfChildren) {
+            delete child.parent;
+            if (child.children) {
+                removeParents(child.children);
+            }
+        }
     };
 
     function doubleclick(d) {
-        if (d.children) {
+	if (d.children) {
             d._children = d.children;
             d.children = null;
         } else {
             d.children = d._children;
             d._children = null;
         }
-
+	
         update(d);
     };
 
