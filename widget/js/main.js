@@ -205,7 +205,7 @@ function paint_graph(node_array) {
                 // Create the link to be shown
                 var link = "No link";
                 if (d.link) {
-                    link = "<a href=" + d.link + " target=\"_blank\"> Go to link <a/>";
+                    link = "<a href=" + d.link + " target=\"_blank\">Go to link<a/>";
                 }
 
                 // Create the labels to be shown
@@ -441,7 +441,7 @@ function paint_tree(node_array) {
                 // Create the link to be shown
                 var link = "No link";
                 if (d.link) {
-                    link = "<a href=" + d.link + " target=\"_blank\"> Go to link <a/>";
+                    link = "<a href=" + d.link + " target=\"_blank\">Go to link<a/>";
                 }
 
                 // Create the labels to be shown
