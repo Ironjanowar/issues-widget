@@ -426,7 +426,7 @@ function paint_tree(node_array) {
             .attr("class", "node")
             .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
             .on("click", singleclick)
-            .on("dblclick", doubleclick.bind(source));
+            .on("dblclick", doubleclick);
 
         nodeEnter.append("circle")
             .attr("r", 1e-6)
@@ -529,12 +529,12 @@ function paint_tree(node_array) {
 
     // Toggle children on click.
     function singleclick(d) {
-        var toSend = d;
-        delete toSend.parent;
+        var toSend = cloneNode(d);
+        toSend.parent = null;
 
         if (toSend._children) {
             toSend.children = toSend._children;
-            delete toSend._children;
+            toSend._children = null;
         }
 
         if (toSend.children) {
@@ -543,19 +543,48 @@ function paint_tree(node_array) {
 
         MashupPlatform.wiring.pushEvent("outputNodeData", toSend);
     };
+    
+    // Clones a node
+    function cloneNode(nodeToClone) {
+	// If it's a base type return it
+	if (typeof nodeToClone == "number" || typeof nodeToClone == "string" || typeof nodeToClone == "boolean" || nodeToClone == null) {
+	    return nodeToClone;
+	}
 
+	if (nodeToClone.parent) {
+	    delete nodeToClone.parent;
+	}
+	
+	var toReturn = {};
+
+	for (var key of Object.keys(nodeToClone)) {
+	    if (typeof nodeToClone[key] == "number" || typeof nodeToClone[key] == "string" || typeof nodeToClone[key] == "boolean" || typeof nodeToClone[key] == "undefined") {
+		// If it's basic type we copy it directly
+		toReturn[key] = nodeToClone[key];
+	    } else if (typeof nodeToClone[key] == "object") {
+		toReturn[key] = [];
+		for (var child of nodeToClone[key]) {
+		    // Adds a child to the child array
+		    toReturn[key].push(cloneNode(child));
+		}
+	    }	    
+	}
+
+	return toReturn;
+    };
+    
     // Remove parent nodes
     function removeParents(arrayOfChildren) {
         for (let child of arrayOfChildren) {
-            delete child.parent;
+            child.parent = null;
             if (child.children) {
                 removeParents(child.children);
             }
         }
     };
 
-    function doubleclick(d) {
-	if (d.children) {
+    function doubleclick(d) {	
+        if (d.children) {
             d._children = d.children;
             d.children = null;
         } else {
