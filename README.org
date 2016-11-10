@@ -1,0 +1,7 @@
+This repository has an operator and a widget together because is
+convinient to use them together, but it is not necessary as long as
+the widget receives the correct formatted data.
+
+Wiring example:
+
+[[https://s11.postimg.org/mp33xxvrn/2016_11_10_13_32_56.jpg]]
