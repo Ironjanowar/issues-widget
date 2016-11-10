@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <widget xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1"
-        vendor="CoNWeT" name="Visualizer Widget" version="1.0.1">
+        vendor="CoNWeT" name="Node Network Widget" version="1.0.1">
   <details>
-    <title>Issues</title>
-    <authors>Cesar Guzman &lt;c.galpizar@alumnos.fi.upm.es&gt;</authors>
+    <title>Node Network</title>
+    <authors>Cesar Guzman &lt;cguzman@conwet.es&gt;</authors>
     <email>wirecloud@conwet.com</email>
-    <description>Chart that shows the issues of users</description>
+    <description>Chart that shows a json-like data structure</description>
     <license>Apache License 2.0</license>
     <licenseurl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseurl>
   </details>
@@ -22,7 +22,7 @@
   </preferences>
 
   <wiring>
-    <inputendpoint name="inputData" type="text" label="inputData" description="Receives the JSON to show in the chart" />
-    <outputendpoint name="outputNodeData" type="text" label="outputData" description="Sends the data of the node that has been clicked" />
+    <inputendpoint name="InputDataSet" type="text" label="Input Data Set" description="Receives the data to show in the chart" />
+    <outputendpoint name="NodeData" type="text" label="Node Data" description="Sends the data of the node that has been clicked" />
   </wiring>
 </widget>

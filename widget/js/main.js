@@ -13,7 +13,7 @@ var dataSet = defaultSet;
 //   - Asigns normalizeJSON() to the inputendpoint
 function config() {
     // When a JSON is received paint it
-    MashupPlatform.wiring.registerCallback('inputData', repaint);
+    MashupPlatform.wiring.registerCallback('InputDataSet', repaint);
 
     // When any preferences change repaint
     MashupPlatform.prefs.registerCallback(repaint.bind(dataSet));
@@ -296,7 +296,7 @@ function paint_graph(node_array) {
      * Toggle children on click.
      */
     function singleclick(d) {
-        MashupPlatform.wiring.pushEvent("outputNodeData", d);
+        MashupPlatform.wiring.pushEvent("NodeData", d);
     };
 
     function doubleclick(d) {
