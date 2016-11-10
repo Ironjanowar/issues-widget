@@ -1,0 +1,76 @@
+* Nodes Network widget
+The Nodes Network widget is a WireCloud widget that lets you visualize
+data (from JSON) in a node web form and interact with the nodes.
+
+* Settings
+- Select view :: Select between the different layouts available.
+
+* Usage
+*Clicking* on a node will send data of that node throught the output
+endpoint.
+
+*Double clicking* on a node will expand or contract its childs.
+
+** Wiring
+*** Input endpoint
+   - inputData: Connect this endpoint to a source of valid data.
+
+     Valid data format:
+
+#+BEGIN_SRC json
+  {
+      "label_name": "aarranz",
+      "image": "http://github.com/aarranz.png?size=100",
+      "id": "aarranz",
+      "children": [ ... ]
+  }
+#+END_SRC
+
+   - label_name :: Name that is going to appear in the node tooltip.
+   - image :: Image to be shown as the node.
+   - id :: Identifier of the node.
+   - children :: List of childrens the node has.
+
+Children structure:
+
+#+BEGIN_SRC json
+  {
+      "label_name": "#159",
+      "title": "WireCloud is handling incorrectly minimized widgets",
+      "labels": [
+          "Bug",
+          "Confirmed"
+      ],
+      "link": "https://github.com/Wirecloud/wirecloud/issues/159",
+      "image": "https://dummyimage.com/300x200/00cc07250/000000/159.jpg&text=%23159",
+      "id": "#159",
+      "children": [ ... ]
+  }
+#+END_SRC
+
+   - label_name :: Name that is going to appear in the node tooltip.
+   - title :: Title is going to appear in the node tooltip.
+   - labels :: Labels that are going to appear in the node tooltip.
+   - link :: Clickable link that is going to appear in the node tooltip.
+   - image :: Image to be shown as the node.
+   - id :: Identifier of the node.
+   - children :: List of childrens the node has.
+
+*** Output endpoint
+   - outputData: Sends data about a selected node.
+
+Output data format:
+
+#+BEGIN_SRC json
+  {
+    "label_name": "#164",
+    "title": "Rework the editor view to use an OffCanvasLayout for the widget/mashup wallet",
+    "labels": [
+      "WorkItem"
+    ],
+    "link": "https://github.com/Wirecloud/wirecloud/issues/164",
+    "image": "https://dummyimage.com/300x200/00cc07250/000000/164.jpg&text=%23164",
+    "id": "#164",
+  }
+#+END_SRC
+
