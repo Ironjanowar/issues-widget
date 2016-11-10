@@ -13,7 +13,7 @@ endpoint.
 
 ** Wiring
 *** Input endpoint
-   - inputData: Connect this endpoint to a source of valid data.
+   - Input Data Set: Connect this endpoint to a source of valid data.
 
      Valid data format:
 
@@ -57,7 +57,7 @@ Children structure:
    - children :: List of childrens the node has.
 
 *** Output endpoint
-   - outputData: Sends data about a selected node.
+   - Node Data: Sends data about a selected node.
 
 Output data format:
 
