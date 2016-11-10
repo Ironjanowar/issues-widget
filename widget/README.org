@@ -6,10 +6,10 @@ data (from JSON) in a node web form and interact with the nodes.
 - Select view :: Select between the different layouts available.
 
 * Usage
-_Clicking_ on a node will send data of that node throught the output
+- *Clicking* on a node will send data of that node throught the output
 endpoint.
 
-_Double clicking_ on a node will expand or contract its childs.
+- *Double clicking* on a node will expand or contract its childs.
 
 ** Wiring
 *** Input endpoint
