@@ -13,7 +13,7 @@ var dataSet = defaultSet;
 //   - Asigns normalizeJSON() to the inputendpoint
 function config() {
     // When a JSON is received paint it
-    MashupPlatform.wiring.registerCallback('inputJSON', repaint);
+    MashupPlatform.wiring.registerCallback('inputData', repaint);
 
     // When any preferences change repaint
     MashupPlatform.prefs.registerCallback(repaint.bind(dataSet));
