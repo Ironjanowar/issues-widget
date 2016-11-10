@@ -94,9 +94,9 @@
         };
 
         // Sends formated json
-        MashupPlatform.wiring.pushEvent("outputJSON", sendJSON(toFormat));
+        MashupPlatform.wiring.pushEvent("FormattedData", sendJSON(toFormat));
     };
 
     // Receives the JSON
-    MashupPlatform.wiring.registerCallback("inputJSON", catchJSON);
+    MashupPlatform.wiring.registerCallback("DataToFormat", catchJSON);
 })();

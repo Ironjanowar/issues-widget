@@ -1,0 +1,54 @@
+* Node Network Data Formatter
+The Node Network Data Formatter is a WireCloud operator that format
+JSON-like data to specific input data that Nodes Network widget needs.
+
+* Settings
+No settings
+
+* Usage
+** Input endpoint
+    - Data To Format: Receives a JSON-like data structure.
+
+** Output endpoint
+   - Formatted Data: Sends data formatted specificaly for Node Network
+     widget.
+
+#+BEGIN_SRC json
+  {
+      "label_name": "aarranz",
+      "image": "http://github.com/aarranz.png?size=100", 
+     "id": "aarranz",
+      "children": [ ... ]
+  }
+#+END_SRC
+
+
+   - label_name :: Name that is going to appear in the node tooltip.
+   - image :: Image to be shown as the node.
+   - id :: Identifier of the node.
+   - children :: List of childrens the node has.
+
+Children structure:
+
+#+BEGIN_SRC json
+  {
+      "label_name": "#159",
+      "title": "WireCloud is handling incorrectly minimized widgets",
+      "labels": [
+          "Bug",
+          "Confirmed"
+      ],
+      "link": "https://github.com/Wirecloud/wirecloud/issues/159",
+      "image": "https://dummyimage.com/300x200/00cc07250/000000/159.jpg&text=%23159",
+      "id": "#159",
+      "children": [ ... ]
+  }
+#+END_SRC
+
+   - label_name :: Name that is going to appear in the node tooltip.
+   - title :: Title is going to appear in the node tooltip.
+   - labels :: Labels that are going to appear in the node tooltip.
+   - link :: Clickable link that is going to appear in the node tooltip.
+   - image :: Image to be shown as the node.
+   - id :: Identifier of the node.
+   - children :: List of childrens the node has.

@@ -4,4 +4,4 @@ the widget receives the correct formatted data.
 
 Wiring example:
 
-[[https://s11.postimg.org/mp33xxvrn/2016_11_10_13_32_56.jpg]]
+[[https://s11.postimg.org/rxx10u88z/2016_11_10_16_32_09.jpg]]

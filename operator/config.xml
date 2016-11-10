@@ -1,20 +1,20 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<operator xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="CoNWeT" name="Visualizer-op" version="1.0.1">
+<operator xmlns="http://wirecloud.conwet.fi.upm.es/ns/macdescription/1" vendor="CoNWeT" name="Node Network Data Formatter" version="1.0.1">
   <details>
-    <title>Parser Visualizer</title>
+    <title>Node Network Data Formatter</title>
     <authors>Cesar Guzman</authors>
-    <email>c.galpizar@alumnos.fi.upm.es</email>
-    <description>Parses a JSON so it can be dispayed in visualizer JSON</description>
+    <email>cguzman@conwet.es</email>
+    <description>Parses a JSON so it can be dispayed in Node Network widget</description>
     <license>Apache License 2.0</license>
     <licenseurl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseurl>
   </details>
 
   <wiring>
-    <inputendpoint name="inputJSON" type="text" label="Input JSON"
-		   description="Receives a JSON file"/>
+    <inputendpoint name="DataToFormat" type="text" label="Data To Format"
+		   description="Receives a JSON-like data structure"/>
 
-    <outputendpoint name="outputJSON" type="text" label="Output JSON"
-		    description="Sends a JSON file" />
+    <outputendpoint name="FormattedData" type="text" label="FormattedData"
+		    description="Sends a JSON-like daha structure" />
   </wiring>
 
   <scripts>
