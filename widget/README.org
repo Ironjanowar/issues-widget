@@ -74,3 +74,11 @@ Output data format:
   }
 #+END_SRC
 
+** Wiring example
+Wiring connections used in the demo below
+
+[[https://s11.postimg.org/airhkv3xv/2016_11_23_12_54_23.jpg]]
+
+* DEMO
+
+[[https://youtu.be/B5CxsepMphM][Click here to see the demo]]
